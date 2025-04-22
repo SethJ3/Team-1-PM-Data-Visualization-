@@ -1,3 +1,3 @@
 weather data stuff
 
-temp is in celc
+wind temps are is in celc
