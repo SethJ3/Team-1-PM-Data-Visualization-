@@ -9,11 +9,13 @@ def getting_weather_data(year):
 
     reader = csv.reader(lines)
     header_row = next(reader)
+    #filtering out the not relevant days
     targeted_dates = ["18", "19", "20", "21", "22"]
     highs, lows, prcp = [], [], []
     year = int(year)
     for row in reader:
         date = (row[header_row.index("DATE")])
+        #making sure that only data from july 18th - 19th and the specified year get used
         if f"{year}" in date and "-07-" in date[4:] and date[8:] in targeted_dates \
                 and row[header_row.index("STATION")] == "USW00014846":
             high = (row[header_row.index("TMAX")])
@@ -22,7 +24,7 @@ def getting_weather_data(year):
             highs.append(high)
             lows.append(low)
             prcp.append(rain)
-
+    #getting the info for wind
     path = Path('merge-csv.com__680906033774b.csv')
     lines = path.read_text().splitlines()
 
@@ -30,6 +32,8 @@ def getting_weather_data(year):
     header_row = next(reader)
 
     w_dir, w_spd = [], []
+    #d_arv is direction average and s_arv is speed average 
+    #They are used to append to w_dir and w_spd
     d_arv, s_arv = [], []
     day = 18
 
@@ -45,6 +49,7 @@ def getting_weather_data(year):
 
             except ValueError:
                 pass
+            #filtering relevant data
             if F"{year}" in time:
 
                 if f"{day}" in time[8:10]:
@@ -54,7 +59,7 @@ def getting_weather_data(year):
         w_spd.append(mean(s_arv))
         if day == 22:
             cntn = False
-
+    #data info is a dict that contains data
     data_info = {
         "Highs": highs,
         "Lows": lows,
