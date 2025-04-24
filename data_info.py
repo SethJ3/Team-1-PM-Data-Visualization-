@@ -39,7 +39,7 @@ def getting_weather_data(year):
 
     cntn = True
     while cntn:
-        day += 1
+        
         for row in reader:
             time = row[0]
 
@@ -59,6 +59,7 @@ def getting_weather_data(year):
         w_spd.append(mean(s_arv))
         if day == 22:
             cntn = False
+        day += 1
     #data info is a dict that contains data
     data_info = {
         "Highs": highs,
