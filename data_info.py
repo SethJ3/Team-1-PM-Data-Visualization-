@@ -2,16 +2,16 @@ import csv
 from pathlib import Path
 
 from statistics import mean
+def getting_weather_data(year):
+    #Highs Lows Rain
+    path = Path('sandusky_weather.csv')
+    lines = path.read_text().splitlines()
 
-path = Path('sandusky_weather.csv')
-lines = path.read_text().splitlines()
-
-reader = csv.reader(lines)
-header_row = next(reader)
-targeted_dates = ["18", "19", "20", "21", "22"]
-highs, lows, prcp = [], [], []
-year = 2012
-while year != 2023:
+    reader = csv.reader(lines)
+    header_row = next(reader)
+    targeted_dates = ["18", "19", "20", "21", "22"]
+    highs, lows, prcp = [], [], []
+    year = int(year)
     for row in reader:
         date = (row[header_row.index("DATE")])
         if f"{year}" in date and "-07-" in date[4:] and date[8:] in targeted_dates \
@@ -55,9 +55,11 @@ while year != 2023:
         if day == 22:
             cntn = False
 
-    print(F"{year}'s weather data: {"Highs:", highs, "Lows:", lows, "Rain:", prcp}")
-    year +=1
-
-
-
-
+    data_info = {
+        "Highs": highs,
+        "Lows": lows,
+        "Rain": prcp,
+        "Wind Speed": w_spd,
+        "Wind Direction": w_dir
+    }
+    return data_info
