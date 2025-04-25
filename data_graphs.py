@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 from pathlib import Path
 from plotly.subplots import make_subplots
 
@@ -22,11 +23,11 @@ for row in reader:
             lows.append(low)
             prcp.append(rain)
 
-
 #y values set as y values fix
 fig = make_subplots(
     rows=1, cols=3,
-    subplot_titles=("Highs and lows", "Rain", "Wind speed and Direction"), shared_yaxes=True
+    subplot_titles=("Highs and lows\nIn Celcius", "Rain\nIn Inches", "Wind speed and Direction\nIn Knots + Degrees"), shared_yaxes=False
 )
 fig.add_bar(x=targeted_dates, y=[highs,lows], row=1, col=1)
+fig.add_bar(x=targeted_dates, y=prcp, row=1, col=2)
 fig.show()
