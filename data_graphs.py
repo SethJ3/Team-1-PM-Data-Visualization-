@@ -1,4 +1,6 @@
 import csv
+from datetime import datetime
+from pathlib import Path
 from plotly.subplots import make_subplots
 from data_info import getting_weather_data
 
@@ -19,4 +21,5 @@ fig.add_bar(x=targeted_dates,
             y = (getting_weather_data(year)["Wind Speed"]), row=1, col=3, showlegend=False)
 fig.add_bar(x=targeted_dates,
             y = (getting_weather_data(year)["Wind Direction"]), row=1, col=4, showlegend=False)
+fig.update_layout(title=f"{year}'s weather data")
 fig.show()
