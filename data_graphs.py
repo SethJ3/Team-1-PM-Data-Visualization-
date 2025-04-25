@@ -1,33 +1,22 @@
 import csv
-from datetime import datetime
-from pathlib import Path
 from plotly.subplots import make_subplots
+from data_info import getting_weather_data
 
-#highs is daily high, lows is daily lows, prcp is daily rain
-
-path = Path('sandusky_weather.csv')
-lines = path.read_text().splitlines()
-
-reader = csv.reader(lines)
-header_row = next(reader)
+year = input(F"What year wdo you want to see? (2012-2022)")
+year = int(year)
 targeted_dates = ["18", "19", "20", "21", "22"]
-highs, lows, prcp = [], [], []
-for row in reader:
-        date = (row[header_row.index("DATE")])
-        if "2012" in date and "-07-" in date[4:] and date[8:] in targeted_dates\
-                and row[header_row.index("STATION")] == "USW00014846":
-            high = (row[header_row.index("TMAX")])
-            low = (row[header_row.index("TMIN")])
-            rain = (row[header_row.index("PRCP")])
-            highs.append(high)
-            lows.append(low)
-            prcp.append(rain)
 
 #y values set as y values fix
 fig = make_subplots(
-    rows=1, cols=3,
-    subplot_titles=("Highs and lows\nIn Celcius", "Rain\nIn Inches", "Wind speed and Direction\nIn Knots + Degrees"), shared_yaxes=False
+    rows=1, cols=4,
+    subplot_titles=("Highs and lows\nIn Celcius", "Rain\nIn Inches",
+                    "Wind speed\nIn Knots", "Wind direction in degrees"), shared_yaxes=False
 )
-fig.add_bar(x=targeted_dates, y=[highs,lows], row=1, col=1)
-fig.add_bar(x=targeted_dates, y=prcp, row=1, col=2)
+fig.add_bar(x=targeted_dates, y = getting_weather_data(year)["Lows"], row=1, col=1, showlegend=False)
+fig.add_bar(x=targeted_dates, y = getting_weather_data(year)["Highs"], row=1, col=1, showlegend=False)
+fig.add_bar(x=targeted_dates, y = getting_weather_data(year)["Rain"], row=1, col=2, showlegend=False)
+fig.add_bar(x=targeted_dates,
+            y = (getting_weather_data(year)["Wind Speed"]), row=1, col=3, showlegend=False)
+fig.add_bar(x=targeted_dates,
+            y = (getting_weather_data(year)["Wind Direction"]), row=1, col=4, showlegend=False)
 fig.show()
