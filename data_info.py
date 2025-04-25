@@ -92,4 +92,3 @@ def getting_weather_data(year):
         "Wind Direction": w_dir
     }
     return data_info
-print(getting_weather_data(2022)["Wind Speed"])
