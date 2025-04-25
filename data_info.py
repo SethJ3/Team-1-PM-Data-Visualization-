@@ -4,7 +4,7 @@ from pathlib import Path
 from statistics import mean
 def getting_weather_data(year):
     #Highs Lows Rain
-    path = Path('sandusky_weather.csv')
+    path = Path('sandusky_weather_2012_2022.csv')
     lines = path.read_text().splitlines()
 
     reader = csv.reader(lines)
@@ -36,30 +36,53 @@ def getting_weather_data(year):
     #They are used to append to w_dir and w_spd
     d_arv, s_arv = [], []
     day = 18
+    for row in reader:
+        time = row[0]
 
-    cntn = True
-    while cntn:
-        
-        for row in reader:
-            time = row[0]
+        try:
+            ws_avr = float(row[7])
+            wd_avr = float(row[6])
 
-            try:
-                ws_avr = float(row[7])
-                wd_avr = float(row[6])
-
-            except ValueError:
-                pass
-            #filtering relevant data
-            if F"{year}" in time:
-
-                if f"{day}" in time[8:10]:
+        except ValueError:
+            pass
+        # filtering relevant data
+        if F"{year}" in time:
+                if f"{18}" in time[8:10]:
                     d_arv.append(wd_avr)
                     s_arv.append(ws_avr)
-        w_dir.append(mean(d_arv))
-        w_spd.append(mean(s_arv))
-        if day == 22:
-            cntn = False
-        day += 1
+                w_dir.append(mean(d_arv))
+                w_spd.append(mean(s_arv))
+                if f"{19}" in time[8:10]:
+                    d_arv.append(wd_avr)
+                    s_arv.append(ws_avr)
+                w_dir.append(mean(d_arv))
+                w_spd.append(mean(s_arv))
+
+                if f"{20}" in time[8:10]:
+                    d_arv.append(wd_avr)
+                    s_arv.append(ws_avr)
+                w_dir.append(mean(d_arv))
+                w_spd.append(mean(s_arv))
+                if f"{21}" in time[8:10]:
+                    d_arv.append(wd_avr)
+                    s_arv.append(ws_avr)
+                w_dir.append(mean(d_arv))
+                w_spd.append(mean(s_arv))
+                if f"{22}" in time[8:10]:
+                    d_arv.append(wd_avr)
+                    s_arv.append(ws_avr)
+                w_dir.append(mean(d_arv))
+                w_spd.append(mean(s_arv))
+        dupe= []
+        dupe2 = []
+        for i in w_dir:
+            if i not in dupe:
+                dupe.append(i)
+        w_dir = dupe[:]
+        for i in w_spd:
+            if i not in dupe2:
+                dupe2.append(i)
+        w_spd = dupe2[:]
     #data info is a dict that contains data
     data_info = {
         "Highs": highs,
@@ -69,3 +92,4 @@ def getting_weather_data(year):
         "Wind Direction": w_dir
     }
     return data_info
+print(getting_weather_data(2022)["Wind Speed"])
